@@ -1,15 +1,9 @@
 'use strict';
 
-var q = require('q');
 var bcrypt = require('bcrypt');
-var config = require('./config');
 var mongoose = require('mongoose');
 
-mongoose.Promise = require('q').Promise;
-
-var db = mongoose.createConnection(config.mongodb);
-
-var User = new mongoose.Schema({
+module.exports = new mongoose.Schema({
     // author: Schema.ObjectId,
     name: {
         type: String,
@@ -62,6 +56,9 @@ var User = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    lastConnectionDate: {
+        type: Date
     }
 });
 
@@ -79,7 +76,3 @@ var User = new mongoose.Schema({
 //     console.log('PRE SAVE', this);
 //     next();
 // });
-
-mongoose.model('user', User);
-
-db.close();

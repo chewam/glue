@@ -36,7 +36,8 @@ module.exports = function(user) {
             t.equal(response.result.name, user.name, 'Check name');
             t.equal(response.result.gender, user.gender, 'Check gender');
             t.equal(response.result.email, user.email.toLowerCase(), 'Check email');
-            server.stop(t.end);
+            require('./search')(user);
+            t.end();
         });
 
     });

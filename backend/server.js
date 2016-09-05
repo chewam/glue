@@ -1,6 +1,6 @@
 'use strict';
 
-require('./database');
+require('./models/');
 
 const fs = require('fs');
 const Good = require('good');
@@ -35,7 +35,7 @@ server.register(JWT, function (err) {
         verifyOptions: {algorithms: ['HS256']},
         validateFunc: function (decoded, request, callback) {
             request.session = decoded;
-            return callback(null, decoded.id && decoded.id.length);
+            return callback(null, decoded._id && decoded._id.length);
         }
     };
 
@@ -45,6 +45,9 @@ server.register(JWT, function (err) {
     server.route(require('./routes/authenticate'));
     server.route(require('./routes/register'));
     server.route(require('./routes/account'));
+    server.route(require('./routes/message'));
+    server.route(require('./routes/search'));
+    server.route(require('./routes/user'));
 
 });
 

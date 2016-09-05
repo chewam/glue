@@ -33,10 +33,12 @@ module.exports = {
                         throw err;
                     } else if (isMatch) {
                         var token = require('jsonwebtoken').sign(
-                            {id: user._id},
+                            {_id: user._id},
                             config.secretKey
                         );
-                        reply({token: token});
+                        reply({token: token, name: user.name});
+                        user.lastConnectionDate = Date.now();
+                        user.save();
                     } else {
                         reply(Boom.forbidden('Wrong email or password'));
                     }

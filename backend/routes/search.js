@@ -5,21 +5,17 @@ var mongoose = require('mongoose');
 
 module.exports = {
     method: 'GET',
-    path: '/account',
+    path: '/search',
     config: {auth: 'jwt'},
     handler: (request, reply) => {
         var db = mongoose.createConnection(config.mongodb);
         var User = db.model('user');
 
-        User.findById(request.session._id, (err, user) => {
+        User.find({}, (err, users) => {
             if (err) {
                 throw err;
             } else {
-                reply({
-                    name: user.name,
-                    email: user.email,
-                    gender: user.gender
-                });
+                reply(users);
             }
         });
     }

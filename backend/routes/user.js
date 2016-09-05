@@ -5,21 +5,25 @@ var mongoose = require('mongoose');
 
 module.exports = {
     method: 'GET',
-    path: '/account',
+    path: '/user/{_id}',
     config: {auth: 'jwt'},
     handler: (request, reply) => {
         var db = mongoose.createConnection(config.mongodb);
         var User = db.model('user');
 
-        User.findById(request.session._id, (err, user) => {
+        User.findById(request.params._id, (err, user) => {
             if (err) {
                 throw err;
             } else {
-                reply({
-                    name: user.name,
-                    email: user.email,
-                    gender: user.gender
+                reply(user);
+
+                var Event = db.model('event');
+                var event = new Event({
+                    emitter: request.session._id,
+                    receiver: user._id,
+                    type: 'visit'
                 });
+                event.save();
             }
         });
     }
